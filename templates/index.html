@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Diabetes Predictor</title>
+</head>
+<body>
+    <h1>Diabetes Predictor</h1>
+    <form id="predict-form">
+        <input type="number" id="pregnancies" name="pregnancies" placeholder="Pregnancies">
+        <input type="number" id="glucose" name="glucose" placeholder="Glucose Level" required>
+        <input type="number" id="blood_pressure" name="blood_pressure" placeholder="Blood Pressure">
+        <input type="number" id="skin_thickness" name="skin_thickness" placeholder="Skin Thickness">
+        <input type="number" id="insulin" name="insulin" placeholder="Insulin">
+        <input type="number" id="bmi" name="bmi" step="0.1" placeholder="BMI" required>
+        <input type="number" id="pedigree_function" name="pedigree_function" step="0.001" placeholder="Pedigree Function" required>
+        <input type="number" id="age" name="age" placeholder="Age" required>
+        <button type="submit">Predict</button>
+    </form>
+    <div class="result" id="result"></div>
+
+    <script>
+        document.getElementById('predict-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const response = await fetch('/predict', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            document.getElementById('result').textContent = result.result || result.error;
+        });
+    </script>
+</body>
+</html>
